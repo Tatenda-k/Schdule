@@ -1,0 +1,290 @@
+import java.util.HashSet;
+import java.util.Set;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.Arrays;
+
+public class Scheduler {
+    //their names are how they are listed alphabetically
+    public static void main(String [] args){
+
+        Teacher [] profs=new Teacher[3];
+
+    int name=2;
+    int days=0;
+    int time_b=9;
+    int time_a=0;    
+    HashSet<Character>id=new HashSet<>(Set.of('b','c'));
+    int limit=2;
+    int breakp=0;
+    profs[0]=new Teacher(name, days,time_b,time_a,id,limit,breakp);
+    name=3;
+    days=1;
+    time_b=0;
+    time_a=13;
+    id=new HashSet<>(Set.of('a','b'));
+    limit=2;
+    breakp=0;
+    profs[1]=new Teacher(name, days,time_b,time_a,id,limit,breakp);
+    name=4;
+    days=0;
+    time_b=9;
+    time_a=0;
+    id=new HashSet<>(Set.of('c','b'));
+    limit=3;
+    breakp=1;
+    profs[2]=new Teacher(name, days,time_b,time_a,id,limit,breakp);
+     
+    //profs[0]= new Teacher(0,Set.of(0,1,3),Set.of(11,12,13,14,15,16),(Set.of('a','b')),3,0);
+    // profs[1]= new Teacher(1,Set.of(4),Set.of(8,9,10),(Set.of('a','c')),2,0);
+    // profs[2]= new Teacher(2,Set.of(null),Set.of(null),(Set.of('b','c')),2,0);
+
+    //rate courses
+
+    Course [] courses=new Course[6];
+    courses[0]=new Course(200,'a',0,-1,true,2);
+    courses[1]= new Course(400,'b',0,-2,true,2);
+    courses[2]=new Course(501,'c',1,-1,true,2);
+    courses[3]=new Course(450,'c',0,-3,true,3);
+    courses[4]=new Course(575,'b',1,-3,true,3);
+    courses[5]=new Course(560,'c',1,-3,true,3);
+    int rm_as=2;
+    int rm_bs=3;
+    //determine which teachers can teach a course
+    //itterate through the teachers and see if they have the tag in their hashset
+    System.out.println(profs.length);
+    // for(int i=0;i<profs.length;i++){ 
+    //     //if the prof has this tag, the course can be taught by this prof
+    //     if (profs[i].get_id().contains('a')){
+    //             System.out.print("found");            
+    //             courses[0].add_prof(profs[i],x);
+    //             x+=1;
+    //         }
+    //     }
+    
+        for(int i=0;i<profs.length;i++){ 
+        //if the prof has this tag, the course can be taught by this prof
+        for(int j=0;j<courses.length;j++){
+            //System.out.println(courses[j].get_tag());
+           
+            if(profs[i].get_id().contains(courses[j].get_tag())){
+                //System.out.println(profs[i].get_id());
+                courses[j].add_prof(profs[i]);
+            }
+        }
+        }
+
+    //we want to organize the profs according to the courses they can teach.
+    // after we make a prof we access it's tag and according to the tab, we assign it
+    // find all courses whose tag is a, find all prof with a tag
+    // find all courses whose tag is b, find all prof with b tag, add all the profs to all the courses list. `                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          `
+
+    Room[] rooms=new Room[2];
+    rooms[0]=new Room(3,1);
+    rooms[1]= new Room(3,0);
+
+    //now we must arrange the coursese in order according to their utility score
+    //utilit score=no of teachers* rooms* times
+    Arrays.sort(courses, Comparator.comparingInt(Course::get_utility) );
+    // for (Course course: courses){
+    //     System.out.println(course.get_name());
+    // }
+    boolean search=true;
+    boolean valid=true;
+    //while(search){
+        //visiting = courses[i]
+        //generate all possible combinations generate(courses[i])
+        //generate(courses[i])
+        // once we get all valid() sort them according to soft constraints
+        // 
+    //}
+        ArrayList<HashSet<Integer>> schedule = new ArrayList<>();
+        schedule.add(new HashSet<>(Set.of(221,-2,80)));
+        schedule.add(new HashSet<>(Set.of(510,-3,101)));
+        schedule.add(new HashSet<>(Set.of(241,-1,91)));
+        schedule.add(new HashSet<>(Set.of(415,-4,150)));
+        //class,prof,room,year class>200,prof,room_t,year
+        // courses- 200-600,time-70-161,room-0-1,year,-2to-5,profs 2 to 20
+        //add first combo of 200
+        int i=0;
+        int time=0;
+        // for first one, we only care if there are no courses scheduled at the same time if the year is the same
+        ArrayList<HashSet<Integer>> fringe = new ArrayList<>();
+        // for(int t=0;t<courses.length;t++){
+        //     System.out.println(courses[t].get_name());
+        //     System.out.println(courses[t].get_utility());
+        // }
+        //tr_freq is an array where each index represents a fringe, and for each fringe the index is the tr's name
+        // the value at the index tells us how many classes the prof is currently teaching.
+        ArrayList<ArrayList<Integer>>tr_freq=new ArrayList<>();
+        ArrayList<Integer> dummy =new ArrayList<>(profs.length);
+        tr_freq.add(dummy);
+        //tr_busy is an array where each index represents a fringe, for each fringe, there is a group of sets, where each set index
+        //is a tr's name, the set contains the times that the teacher is teaching
+        ArrayList<HashSet<Integer>>tr_busy=new ArrayList<>();
+        //rm_a is an array of hashmaps where each index is a state, and the key is the time, value is the freq
+        ArrayList<HashMap<Integer,Integer>> rm_a = new ArrayList<>();
+        ArrayList<HashMap<Integer,Integer>> rm_b = new ArrayList<>();
+                
+        ArrayList<ArrayList<Integer>> next_freq=new ArrayList<>();
+        
+        int x=0;
+        while(x<1){
+        for(int f=0;f<fringe.size();f++ ){
+        int sn=0;
+        // Create an ArrayList to hold the hash sets
+        ArrayList<HashSet<Integer>> tr_sc = new ArrayList<>();
+        for (int q=0;q<profs.length;q++) {
+                tr_sc.add(new HashSet<>());            
+        // Create five empty hash sets and add them to the ArrayList in one step
+        }
+
+        //this is the hashmap for the current state
+        HashMap<Integer, Integer> curr_a = new HashMap<>();
+        HashMap<Integer, Integer> curr_b = new HashMap<>();
+        ArrayList<HashSet<Integer>> next_rm_b = new ArrayList<>();
+        ArrayList<HashSet<Integer>> next_rm_a= new ArrayList<>();
+        ArrayList<HashSet<Integer>> next_tr_busy=new ArrayList<>();
+        ArrayList<Integer> curr_freq=tr_freq.get(f);
+
+
+        //for every single profesor who can teach this course
+        for(int a =0;a<courses[i].get_profs().size();a++){ 
+            //access the tr_freq of this curr state
+            //if the professor is still available to teach other courses
+            //each professor has their own index, which is their name, it tells us how many classes they are signed up for
+           if(curr_freq.get(courses[i].get_profs().get(a).get_name())==courses[i].profs.get(a).get_limit());
+            //for all possible times
+            for(int b=7;b<16;b++){
+               // System.out.println(b);
+                time=b*10;
+                //for all possible day combinations
+                for(int d =0;d<2;d++){
+                    if(d==1){
+                        time+=1;
+                    }
+                    //right now, we are on fringe i, so we go to tr_busy[i]. in tr.busy_i, there are teachers.length()sets, find the one with the profs name as index
+                // HashSet<Integer> curr =tr_busy.get(x);
+                // if(tr_busy.contains(x))
+                HashSet<Integer> hashSet = tr_sc.get(courses[i].get_profs().get(a).get_name());
+                //if the teacher is already teaching now
+                if(hashSet.contains(time)){
+                    continue;
+                }
+                HashMap<Integer, Integer> hashMap = new HashMap<>();
+
+                //if the room is already occupied to the maximum
+                int rm;
+                for(int k =0;k<2;k++){
+                    if(k==1){
+                     hashMap = rm_a.get(x);
+                     rm=rm_as;
+
+                    }
+                    else{
+                 hashMap = rm_b.get(x);
+                  rm=rm_bs;
+                    }
+                if(hashMap.containsKey(time) && hashMap.get(time)==rm){
+                    continue;
+                }
+                    // else{
+                    // int value = hashMap.getOrDefault(time, 0) + 1;
+                    // }                
+                //
+            for (HashSet<Integer> crs : schedule) {
+            if (crs.contains(time) && crs.contains(courses[i].get_year())){
+                // System.out.println("duplicate founds");
+                // System.out.println(crs);
+                valid=false;
+                continue;     
+            }   
+        }  
+        //update the hashmap  
+        int value = hashMap.getOrDefault(time, 0) + 1;
+        hashMap.put(time, value);
+                    // }
+        if(valid){
+            HashSet<Integer>sched=new HashSet<>(Set.of(time,courses[i].get_year(),courses[i].get_name(),courses[i].get_profs().get(a).get_name(),courses[i].get_room_t()));
+            fringe.add(sched);
+        }
+        valid=true;
+        //create a new state to add to new_fringes
+        //to increase this tr's frequency, first go to the curr state and retrieve his frequency
+        // then copy a new frequency arra, but then increase this frequency by 1, add this to new_freq
+        // at state i so 
+        curr_freq.get(courses[i].get_profs().get(a).get_name());
+        ArrayList<Integer>ne=curr_freq;
+        //increase the profs index by 1
+        ne.set(courses[i].get_profs().get(a).get_name(),curr_freq+1); 
+        next_freq.add(ne);
+        //add it to the list of new tr_freqs
+        //whatever room is now booked at this time. 
+        //get to the index of f which is the fringe we are at,
+        //create a copy and add time to it
+
+
+        if(k==1){
+            HashSet<Integer> temp=rm_a.get(f);
+            temp.add(time);
+            next_rm_a.add(temp);
+
+        }
+        else{
+            HashSet<Integer> temp=rm_b.get(f);
+            temp.add(time);
+            next_rm_b.add(temp);
+
+        }
+
+        //update tr.s busy
+        //retrieve the array associated with this fringe
+        // add the time to the set at the tr's name's index
+       ARrayList<HashSet> cur=tr_busy.get(f);
+        //the array
+        HashSet<Integer> times=cur.get(courses[i].get_profs().get(a).get_name());
+        times.add(time);
+        next_tr_busy.add(time);
+
+    }
+
+
+            
+        } 
+    }
+    //update the state 
+    // the teacher is teaching more classes
+    // the rms availability needs to be updated
+    // the tr is busy during this time, 
+    //the utility score has gone up
+    
+       
+              }
+              x+=1;
+            }
+
+            }
+
+        //        for (int k = 0; k < fringe.size(); k++) {
+        // // //     kterate through the set.
+        // // //     for (knteger element : sets[k]) {
+        // // //         // Print the element.
+        //       System.out.println(fringe.get(k));
+        // }
+            
+        
+ 
+        
+            
+        
+
+
+
+    
+
+
+
+
+    }
+}

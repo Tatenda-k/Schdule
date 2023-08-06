@@ -1,0 +1,19 @@
+there is no class that can only take place on monday, or only wed or only friday, so using the mwf template will be okay for classes that are for two days. but also use the tu,th template
+ calc 2 time, and discrete math time
+ if a course has a freq attribute 2, then we also generate for Tuesday, and Thur
+ perhaps a prof, does not want to teach on either friday,m, then if the freq is 2, the utility score still increases
+
+ let's assign prof to groups after each instantiation, and then when we want to find the profs that can teach a certain course, we get the course's id and the prof that are associdated with that id
+ so 
+
+ organize the courses by utility
+ set a boolean to run
+ pop the first course from the list
+ pass it to the successor function
+ create all possible valid combinations
+ for every comb, create all valid comb, and pass to the successor function. 
+ once the max score is reached we can return and set the boolean to false so we can exit the loop
+
+ courses are now organized. we need to move from --abcde to abcde--
+ keep track of which index we want to next draw from do this wile boolean =true
+

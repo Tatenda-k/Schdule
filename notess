@@ -1,0 +1,37 @@
+at the state level 
+the state is the index we are at, so no need for array of states. 
+schedule array hashset
+each array represents the state we are in, each hashset is a course summary
+
+rm_a hashmap
+each key represents the time, the value is the number of times this time is used
+
+
+tr_freq array
+each index is the teacher's name, the index value is the number of times the teacher is teaching
+
+tr_sc array hashset
+each index is the teacher's number, the index contains a hashset of times the teacher is teaching
+
+
+at the fringe level
+we have an array of schedules so put each sched_state array into the new_sched array
+suppose we are trying to find the second schedule array. then schedules.get(2)- this will return the array that has the sets that
+we want to itterate through each hashset in .get(2) to check for what we are looking for
+then we can copy the schedule, and add the cur_course to it. and add the new_sched to new_sched array
+
+for rm_a we have an array of hashmaps, where each key is the time, the value is the freq
+for the second schedule in the array go to rm_a.get(2)
+see if the time is in the hashset and its value is limit
+copy the hashmap, increase the time value by 1, append the new hashmap to the array
+
+for tr_freq, the index is the teacher's name, 
+for the second schedule, check if tr_sc.get(name) == limit
+for the second schedule go to arraylist.get(2) and then get the the tr's name as index
+create a copy, update and add the  new tr_sc.get(2) to new_tr_freq
+
+
+for the tr_sc array, each index is the teacher's name
+for the second schedule,  fo to tr_sc.get(2) , now at the second array, check the set  and see if the time is already there
+for the first itteration, suppose we want to go to teacher 4, but their hashset is not there, so create profs.length hashsets 
+then at the end of the run, the hashset at index 2 has been updated, so now we upload the array at index 2 to the new_trs_sc
